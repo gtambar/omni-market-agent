@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OmniMarket Agent — Light Mode 24/7 Multi-Modal Quantitative &amp; Deep Research Platform</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+  <script src="https://unpkg.com/lightweight-charts@4.1.3/dist/lightweight-charts.standalone.production.js"></script>
+</head>
+<body class="light-mode">
+  <!-- Top 24/7 Pulse & Countdown Header -->
+  <header class="topbar">
+    <div class="brand">
+      <span class="pulse-dot"></span>
+      <div>
+        <h1>
+          OMNIMARKET AGENT
+          <span class="badge-gf">Google Finance Live Grounded</span>
+          <span class="badge-mode-pill">☀️ Light UI</span>
+        </h1>
+        <p class="subtitle">
+          24/7 Multi-Agent Quantitative Terminal • DJIA (30) • Nasdaq 100 (101) • S&amp;P 500 (503) • Russell 3000/IWM • Value • Congressional • Tom Lee (Fundstrat)
+        </p>
+      </div>
+    </div>
+    <div class="topbar-stats">
+      <div class="stat-pill">
+        <span class="label">24/7 Auto-Update (3m)</span>
+        <span id="countdown-timer" class="value brand-accent">03:00</span>
+      </div>
+      <div class="stat-pill">
+        <span class="label">Portfolio Equity</span>
+        <span id="header-equity" class="value">$100,000.00</span>
+      </div>
+      <div class="stat-pill">
+        <span class="label">Buying Power</span>
+        <span id="header-cash" class="value">$100,000.00</span>
+      </div>
+      <button id="btn-theme-toggle" class="btn-secondary" title="Toggle Light / Dark UI Theme">☀️ Light Mode</button>
+      <button id="btn-refresh-now" class="btn-action" title="Force immediate 3-minute refresh cycle">⟳ Refresh Now</button>
+    </div>
+  </header>
+
+  <!-- Flashing Key Indicators Marquee -->
+  <div class="flash-ribbon" id="flash-ribbon">
+    <span class="ribbon-title">⚡ LIVE FLASHING INDICATORS:</span>
+    <div class="ribbon-items" id="flash-ribbon-items">Loading 24/7 multi-index scanner...</div>
+  </div>
+
+  <!-- 7 Index Selector Cards -->
+  <section class="index-strip" id="index-strip">
+    <!-- Populated dynamically by app.js -->
+  </section>
+
+  <!-- TOP HERO SECTION: Interactive Voice Console + Interactive Stock Chart + RSI(14)/Divergence Sub-Chart -->
+  <section class="top-chart-section" id="top-chart-section">
+    <!-- Dedicated Interactive Voice Assistant Interface -->
+    <div class="voice-console-bar" id="interactive-voice-console">
+      <div class="vc-left">
+        <span id="voice-status-badge" class="vc-badge idle">🎙️ VOICE READY</span>
+        <div class="vc-transcript-box">
+          <div id="voice-live-prompt" class="vc-prompt">
+            Interactive Voice Agent: Click <strong>"🎙️ Talk to OmniMarket"</strong> — I will ask <em>"How can I help you today?"</em>, display the stock chart as we interact, and speak the full analysis.
+          </div>
+          <div id="voice-live-transcript" class="vc-subtext">Press <strong>Stop Response</strong> (or <code>Esc</code>) at any time to interrupt speech or listening.</div>
+        </div>
+      </div>
+      <div class="vc-actions">
+        <button type="button" id="btn-start-voice-assistant" class="btn-voice-primary" title="Start interactive voice conversation ('How can I help you today?')">
+          🎙️ Talk to OmniMarket
+        </button>
+        <button type="button" id="btn-stop-voice-response" class="btn-voice-stop" title="Immediately stop spoken voice response or microphone listening (Esc)">
+          ⏹️ Stop Response
+        </button>
+      </div>
+    </div>
+
+    <div class="panel chart-panel" id="chart-panel">
+      <!-- Prominent Top Stock Search Bar -->
+      <div class="top-chart-search-row">
+        <form id="top-stock-search-form" class="top-stock-search-form">
+          <button type="button" id="btn-top-mic" class="btn-mic" title="Interactive Voice Search ('How can I help you today?')">🎤 Voice</button>
+          <input
+            type="text"
+            id="top-stock-search-input"
+            class="top-stock-search-input"
+            placeholder="Search any stock ticker or company to update top chart &amp; indicators (e.g. AAPL, NVDA, MSFT, TSLA, VST, IWM)..."
+            autocomplete="off"
+          />
+          <button type="submit" class="btn-action">📈 Load Stock Chart &amp; Indicators</button>
+        </form>
+        <div class="top-quick-tickers">
+          <span class="chip-label">Quick Chart:</span>
+          <button type="button" class="chip top-ticker-chip" data-ticker="NVDA">NVDA</button>
+          <button type="button" class="chip top-ticker-chip" data-ticker="AAPL">AAPL</button>
+          <button type="button" class="chip top-ticker-chip" data-ticker="MSFT">MSFT</button>
+          <button type="button" class="chip top-ticker-chip" data-ticker="TSLA">TSLA</button>
+          <button type="button" class="chip top-ticker-chip" data-ticker="GOOGL">GOOGL</button>
+          <button type="button" class="chip top-ticker-chip" data-ticker="AMZN">AMZN</button>
+          <button type="button" class="chip top-ticker-chip" data-ticker="VST">VST</button>
+          <button type="button" class="chip top-ticker-chip" data-ticker="IWM">IWM</button>
+        </div>
+      </div>
+
+      <!-- Chart Header: Live Price, Google Finance Link, MA Legend & Signal Badge -->
+      <div class="chart-header">
+        <div class="chart-title-block">
+          <h2 id="chart-ticker-title">NVDA — NVIDIA Corporation</h2>
+          <a id="chart-gf-link" href="https://www.google.com/finance/quote/NVDA:NASDAQ" target="_blank" rel="noopener" class="gf-link">
+            🔗 Grounded in Google Finance (NVDA:NASDAQ)
+          </a>
+        </div>
+        <div class="ma-legend">
+          <span class="ma-tag ma9">● SMA 9</span>
+          <span class="ma-tag ma20">● SMA 20</span>
+          <span class="ma-tag ma50">● SMA 50</span>
+          <span class="ma-tag ma200">● SMA 200</span>
+          <span id="chart-signal-badge" class="signal-badge buy">STRONG BUY</span>
+        </div>
+      </div>
+
+      <!-- Primary Candlestick + MA(9, 20, 50, 200) Canvas -->
+      <div id="tv-chart-container" class="chart-canvas"></div>
+
+      <!-- Highlighted Price-RSI Divergence Status Banner -->
+      <div id="chart-divergence-banner" class="divergence-banner">
+        <span class="div-badge-label">📐 PRICE–RSI(14) DIVERGENCE DETECTOR:</span>
+        <span id="chart-divergence-badge" class="signal-badge hold">LOADING...</span>
+        <span id="chart-divergence-text" class="div-explanation-text">Analyzing 250-day Google Finance OHLCV swings...</span>
+      </div>
+
+      <!-- Synchronized Wilder's RSI(14) & Divergence Oscillator Sub-Chart -->
+      <div class="rsi-subchart-label">Wilder's RSI (14) Oscillator &amp; Swing Divergence Panel (30 Oversold / 70 Overbought)</div>
+      <div id="tv-rsi-container" class="rsi-canvas"></div>
+
+      <!-- 4 Live Indicator Cards (MA 9/20/50/200, RSI/Momentum/MACD, Divergence, Analyst Target & Smart Money) -->
+      <div class="chart-submetrics" id="chart-submetrics">
+        <!-- Populated dynamically by loadChart() -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Workspace Grid: Left (Deep Research Studio + Screener) | Right (Coordinator Agent + Execution) -->
+  <main class="terminal-grid">
+    <div class="left-workspace">
+      <!-- Dedicated Multi-Modal Deep Stock Research Search Area -->
+      <div class="panel deep-research-panel" id="deep-research-studio">
+        <div class="dr-header">
+          <div>
+            <h2>🔬 Deep Stock Research Studio <span class="dr-subbadge">DeepResearchSubAgent • Company + Technical Buy/Sell/Hold</span></h2>
+            <p class="panel-sub">
+              Dedicated multi-modal (Voice 🎤 + Text ⌨️) research engine analyzing company business model, competitive moat, fundamental metrics, catalysts/risks, and technical MA(9/20/50/200)/RSI/Divergence to output a grounded <strong>BUY</strong>, <strong>SELL</strong>, or <strong>HOLD</strong> verdict.
+            </p>
+          </div>
+          <div class="dr-audio-controls">
+            <label class="voice-toggle">
+              <input type="checkbox" id="research-tts-enabled" checked />
+              <span>🔊 Auto-Read Briefing</span>
+            </label>
+            <button type="button" id="btn-play-research-voice" class="btn-secondary btn-sm" title="Play spoken executive research briefing">▶️ Listen</button>
+            <button type="button" id="btn-stop-research-voice" class="btn-voice-stop btn-sm" title="Stop spoken research briefing">⏹️ Stop</button>
+          </div>
+        </div>
+
+        <!-- Separate Multi-Modal Search Bar for Deep Research -->
+        <form id="deep-research-form" class="dr-search-bar">
+          <button type="button" id="btn-research-mic" class="btn-mic" title="Interactive Voice Deep Research ('How can I help you today?')">🎤 Voice Search</button>
+          <input
+            type="text"
+            id="deep-research-input"
+            class="dr-search-input"
+            placeholder="Search any stock or ask: 'Deep research on AAPL company moat and technical analysis to buy, sell, or hold'..."
+            autocomplete="off"
+          />
+          <button type="submit" id="btn-run-research" class="btn-action">🔬 Run Deep Research &amp; Update Chart</button>
+        </form>
+
+        <div class="dr-quick-chips">
+          <span class="chip-label">Quick Deep Research:</span>
+          <button type="button" class="chip dr-chip" data-ticker="NVDA">NVDA (AI Silicon)</button>
+          <button type="button" class="chip dr-chip" data-ticker="AAPL">AAPL (Ecosystem)</button>
+          <button type="button" class="chip dr-chip" data-ticker="MSFT">MSFT (Cloud/AI)</button>
+          <button type="button" class="chip dr-chip" data-ticker="TSLA">TSLA (Autonomy/EV)</button>
+          <button type="button" class="chip dr-chip" data-ticker="VST">VST (Nuclear/Power)</button>
+          <button type="button" class="chip dr-chip" data-ticker="IWM">IWM (Russell 2000)</button>
+          <button type="button" class="chip dr-chip" data-ticker="GOOGL">GOOGL (Search/Cloud)</button>
+        </div>
+
+        <!-- Deep Research Output Container -->
+        <div id="deep-research-results" class="dr-results-container">
+          <!-- Populated dynamically by DeepResearchSubAgent -->
+        </div>
+      </div>
+
+      <!-- Screener Table -->
+      <div class="panel screener-panel" id="screener-panel">
+        <div class="screener-toolbar">
+          <div class="filter-tabs" id="filter-tabs">
+            <button class="tab active" data-index="">All Tracked</button>
+            <button class="tab" data-index="BUY_SIGNALS">⚡ Buy Signals</button>
+            <button class="tab" data-index="DJIA">DJIA (30)</button>
+            <button class="tab" data-index="NASDAQ_100">Nasdaq 100 (101)</button>
+            <button class="tab" data-index="SP500">S&amp;P 500 (503)</button>
+            <button class="tab" data-index="IWM_RUSSELL3000">IWM &amp; Russell 3000</button>
+            <button class="tab" data-index="VALUE_STOCKS">Value Stocks</button>
+            <button class="tab" data-index="CONGRESSIONAL_LEADERS">🏛️ Congressional Index</button>
+            <button class="tab" data-index="TOM_LEE_FUNDSTRAT">🎯 Tom Lee (Fundstrat)</button>
+          </div>
+          <form id="screener-search-form" class="screener-search-form">
+            <input type="text" id="ticker-search" class="search-input" placeholder="Filter or press Enter to chart (e.g. AAPL, NVDA)..." />
+          </form>
+        </div>
+        <div class="table-scroll">
+          <table class="screener-table">
+            <thead>
+              <tr>
+                <th>Ticker</th>
+                <th>Live Price</th>
+                <th>Daily %</th>
+                <th>Momentum (10d)</th>
+                <th>RSI (14)</th>
+                <th>MA (9 / 20 / 50 / 200)</th>
+                <th>Divergence</th>
+                <th>Analyst Target (Upside)</th>
+                <th>Smart Money</th>
+                <th>Signal</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="screener-tbody">
+              <!-- Populated dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Column: Multi-Modal Voice & Text Agent + Trade Execution & HITL -->
+    <aside class="right-sidebar">
+      <!-- Multi-Modal Agent Console -->
+      <div class="panel agent-panel">
+        <div class="panel-header">
+          <div>
+            <h3>🎙️ Multi-Modal Coordinator Agent</h3>
+            <p class="panel-sub">Voice + Text • Technical, Analyst, Smart-Money &amp; Execution Sub-Agents</p>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center;">
+            <label class="voice-toggle">
+              <input type="checkbox" id="tts-enabled" checked />
+              <span>🔊 Voice Output</span>
+            </label>
+            <button type="button" id="btn-stop-chat-voice" class="btn-voice-stop btn-sm" title="Stop spoken response">⏹️ Stop</button>
+          </div>
+        </div>
+
+        <div class="chat-log" id="chat-log">
+          <div class="msg assistant">
+            <div class="msg-meta">OmniMarket Coordinator • Grounded in Live Google Finance</div>
+            <div class="msg-body">
+              Welcome to the <strong>Interactive Voice &amp; Light Mode OmniMarket Terminal</strong>!<br/><br/>
+              Click <strong>🎙️ Talk to OmniMarket</strong> (or any <strong>🎤 Voice</strong> button): I will greet you with <em>"How can I help you today?"</em>, listen to your request, display the live stock chart on screen while we interact, and speak the complete analysis. Click <strong>⏹️ Stop Response</strong> anytime to interrupt.<br/><br/>
+              Try saying or typing:
+              <ul>
+                <li><em>"Tell me everything about Apple"</em></li>
+                <li><em>"Analyze NVDA moving averages, RSI, and divergence"</em></li>
+                <li><em>"Buy 5 shares of MSFT"</em></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="quick-prompts">
+          <button class="chip" data-prompt="Analyze NVDA technicals, analyst upgrades, and smart money ownership">Analyze NVDA</button>
+          <button class="chip" data-prompt="Analyze AAPL moving averages, RSI, and divergence">Analyze AAPL</button>
+          <button class="chip" data-prompt="Which stocks are owned by Congressional leaders? Overview">🏛️ Congress Index</button>
+          <button class="chip" data-prompt="Show Tom Lee Fundstrat index overview and top buys">🎯 Tom Lee Index</button>
+        </div>
+
+        <form id="chat-form" class="chat-input-bar">
+          <button type="button" id="btn-mic" class="btn-mic" title="Interactive Voice ('How can I help you today?')">🎤</button>
+          <input type="text" id="chat-input" placeholder="Ask about any stock or instruct 'Buy 10 NVDA'..." autocomplete="off" />
+          <button type="submit" class="btn-send">Send</button>
+        </form>
+      </div>
+
+      <!-- Portfolio & Order Execution / HITL Panel -->
+      <div class="panel portfolio-panel">
+        <div class="panel-header">
+          <h3>💼 Trade Execution &amp; HITL Gate</h3>
+          <span class="badge-mode" id="broker-mode-badge">PAPER LEDGER</span>
+        </div>
+        <div id="hitl-pending-box" class="hitl-box hidden"></div>
+        <div class="quick-trade-form">
+          <input type="text" id="trade-ticker" value="NVDA" class="trade-input-sym" />
+          <input type="number" id="trade-qty" value="5" min="1" max="10000" class="trade-input-qty" />
+          <button id="btn-buy" class="btn-buy">BUY</button>
+          <button id="btn-sell" class="btn-sell">SELL</button>
+        </div>
+        <div class="positions-list" id="positions-list">
+          <!-- Open positions -->
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
